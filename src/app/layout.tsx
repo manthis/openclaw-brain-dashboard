@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Manrope, JetBrains_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const inter = Inter({
@@ -36,6 +37,7 @@ export default function RootLayout({
         className={`${inter.variable} ${manrope.variable} ${jetbrainsMono.variable} antialiased`}
       >
         {children}
+        <Toaster position="bottom-right" richColors />
       </body>
     </html>
   );
