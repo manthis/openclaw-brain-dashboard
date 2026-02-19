@@ -123,6 +123,10 @@ npm start
 
 > 📷 **Screenshots coming soon!** The following sections describe the key interfaces available in the dashboard.
 
+### 🔐 Login
+![Login Page](docs/screenshots/login.png)
+*Secure JWT authentication with username/password*
+
 ### 🏠 Main Dashboard
 ![Dashboard Preview](docs/screenshots/dashboard.png)
 *Real-time overview with system metrics, active sessions, recent activity, and quick actions*

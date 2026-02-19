@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Puzzle, Plus, Trash2, FolderOpen, FileText, Settings } from "lucide-react"
+import { Puzzle, Plus, Trash2, FolderOpen, FileText, Settings, ChevronLeft, ChevronRight } from "lucide-react"
 import { toast } from "sonner"
 
 interface Skill {
@@ -35,6 +35,8 @@ export default function SkillsPage() {
   const [newName, setNewName] = useState("")
   const [newDesc, setNewDesc] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 12
 
   const loadSkills = () => {
     fetch("/api/skills").then((r) => r.json()).then((d) => setSkills(d.skills || []))
@@ -89,6 +91,16 @@ export default function SkillsPage() {
     toast.success("Skill deleted")
   }
 
+  // Pagination
+  const totalPages = Math.ceil(skills.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedSkills = skills.slice(startIndex, endIndex)
+
+  const goToPage = (page: number) => {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)))
+  }
+
   return (
     <PageTransition>
       <div className="flex items-center justify-between mb-8">
@@ -113,40 +125,80 @@ export default function SkillsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Skills List */}
-        <div className="space-y-3">
-          {skills.map((skill) => (
-            <FadeIn key={skill.name + skill.source}>
-              <Card
-                className={`cursor-pointer transition-shadow hover:shadow-md ${selected?.name === skill.name ? "ring-2 ring-[#FF385C]" : ""}`}
-                onClick={() => viewSkill(skill.name)}
-              >
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Puzzle className="size-4 text-[#FF385C]" />
-                      <CardTitle className="text-sm">{skill.name}</CardTitle>
+        <div className="flex flex-col h-full">
+          <div className="space-y-3 flex-1">
+            {paginatedSkills.map((skill) => (
+              <FadeIn key={skill.name + skill.source}>
+                <Card
+                  className={`cursor-pointer transition-shadow hover:shadow-md ${selected?.name === skill.name ? "ring-2 ring-[#FF385C]" : ""}`}
+                  onClick={() => viewSkill(skill.name)}
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Puzzle className="size-4 text-[#FF385C]" />
+                        <CardTitle className="text-sm">{skill.name}</CardTitle>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Badge variant={skill.source === "global" ? "secondary" : "outline"} className="text-[10px]">
+                          {skill.source}
+                        </Badge>
+                        {skill.source === "local" && (
+                          <Button variant="ghost" size="icon" className="size-7" onClick={(e) => { e.stopPropagation(); deleteSkill(skill) }}>
+                            <Trash2 className="size-3 text-[#FF385C]" />
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Badge variant={skill.source === "global" ? "secondary" : "outline"} className="text-[10px]">
-                        {skill.source}
-                      </Badge>
-                      {skill.source === "local" && (
-                        <Button variant="ghost" size="icon" className="size-7" onClick={(e) => { e.stopPropagation(); deleteSkill(skill) }}>
-                          <Trash2 className="size-3 text-[#FF385C]" />
-                        </Button>
-                      )}
+                    {skill.description && <p className="text-xs text-[#717171] mt-1">{skill.description}</p>}
+                    <div className="flex gap-1 mt-2">
+                      {skill.hasConfig && <Badge variant="outline" className="text-[10px]"><Settings className="size-2.5 mr-1" />config</Badge>}
+                      <Badge variant="outline" className="text-[10px]"><FileText className="size-2.5 mr-1" />{skill.files.length} files</Badge>
                     </div>
-                  </div>
-                  {skill.description && <p className="text-xs text-[#717171] mt-1">{skill.description}</p>}
-                  <div className="flex gap-1 mt-2">
-                    {skill.hasConfig && <Badge variant="outline" className="text-[10px]"><Settings className="size-2.5 mr-1" />config</Badge>}
-                    <Badge variant="outline" className="text-[10px]"><FileText className="size-2.5 mr-1" />{skill.files.length} files</Badge>
-                  </div>
-                </CardHeader>
-              </Card>
-            </FadeIn>
-          ))}
-          {skills.length === 0 && <p className="text-[#717171] text-sm">No skills found.</p>}
+                  </CardHeader>
+                </Card>
+              </FadeIn>
+            ))}
+            {skills.length === 0 && <p className="text-[#717171] text-sm">No skills found.</p>}
+          </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="mt-4 flex items-center justify-between border-t pt-4">
+              <div className="text-sm text-[#717171]">
+                Showing {startIndex + 1}-{Math.min(endIndex, skills.length)} of {skills.length}
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="size-4" />
+                </Button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => goToPage(page)}
+                    className="min-w-[2.5rem]"
+                  >
+                    {page}
+                  </Button>
+                ))}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  <ChevronRight className="size-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Skill Detail */}
