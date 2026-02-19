@@ -1,0 +1,21 @@
+# Screenshots Directory
+
+This directory will contain screenshots of the OpenClaw Brain Dashboard.
+
+## Planned Screenshots
+
+- `dashboard.png` — Main dashboard overview
+- `skills.png` — Skills manager interface
+- `editor-ai.png` — Markdown editor with AI assistance
+- `config.png` — OpenClaw configuration editor
+- `crons.png` — Cron jobs manager
+- `sessions.png` — Session monitor
+- `monitoring.png` — System monitoring charts
+- `git.png` — Git integration interface
+- `auth.png` — Login page
+
+## Status
+
+🚧 **Screenshots coming soon!**
+
+These will be added as features are implemented and stabilized.
