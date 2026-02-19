@@ -132,7 +132,7 @@ npm start
 *Browse global and local skills, create new ones, edit code with syntax highlighting*
 
 ### ✍️ Markdown Editor with AI
-![AI Editor](docs/screenshots/editor-ai.png)
+![AI Editor](docs/screenshots/editor.png)
 *CodeMirror editor with OpenAI-powered suggestions for MEMORY.md, SOUL.md, and daily logs*
 
 ### ⚙️ OpenClaw Configuration
