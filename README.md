@@ -20,7 +20,7 @@
 
 ### 🎛️ **Core Management**
 - 🏠 **Unified Dashboard** — Real-time overview of agent status, sessions, and system health
-- 🧩 **Skills Manager** — Browse, create, edit, and organize OpenClaw skills with live preview
+- 🧩 **Skills Manager** — Browse, create, edit, and organize OpenClaw skills with live preview and pagination (12 skills per page)
 - 📝 **Markdown Editor with AI** — CodeMirror-powered editor with OpenAI integration for intelligent content assistance
 - ⚙️ **OpenClaw Config** — Visual interface for editing `config.json` with validation and hot-reload
 - 🔐 **Secure Authentication** — JWT-based auth with bcrypt password hashing
@@ -133,7 +133,7 @@ npm start
 
 ### 🧩 Skills Manager
 ![Skills Manager](docs/screenshots/skills.png)
-*Browse global and local skills, create new ones, edit code with syntax highlighting*
+*Browse global and local skills with pagination (12 per page), create new ones, edit code with syntax highlighting*
 
 ### ✍️ Markdown Editor with AI
 ![AI Editor](docs/screenshots/editor.png)
@@ -158,10 +158,6 @@ npm start
 ### 🗂️ Git Integration
 ![Git](docs/screenshots/git.png)
 *Repository status, commit history, branch management, and quick commit tools*
-
-### 🔐 Authentication
-![Login](docs/screenshots/auth.png)
-*Secure JWT-based login with session management*
 
 ---
 

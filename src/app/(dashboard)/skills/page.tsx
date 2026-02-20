@@ -36,7 +36,7 @@ export default function SkillsPage() {
   const [newDesc, setNewDesc] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 12
+  const itemsPerPage = 10
 
   const loadSkills = () => {
     fetch("/api/skills").then((r) => r.json()).then((d) => setSkills(d.skills || []))
